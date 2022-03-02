@@ -1,7 +1,10 @@
 package com.yasir.analysis.mode.design.singleton;
 
-import java.io.*;
+import org.apache.commons.lang3.SerializationUtils;
+
+import java.io.Serializable;
 import java.lang.reflect.Constructor;
+import java.util.Objects;
 
 /**
  * @description: 懒加载，使用静态内部类，使用时加载用时候在加载，jvm保证线程安全与唯一
@@ -24,18 +27,26 @@ public class CaseC implements Serializable {
         return CaseThreeHolder.INSTANCE;
     }
 
-    public static void main(String[] args) throws Exception {
-        System.out.println(CaseC.getInstance());
-        System.out.println(CaseC.reflectToObj());
+    public static void main(String[] args) {
+        System.out.println(CaseC.getInstance().hashCode());
+        CaseC c = CaseC.reflectToObj();
+        System.out.println(Objects.isNull(c) ? null : c.hashCode());
+        System.out.println(CaseC.unSerialToObj().hashCode());
     }
 
     /**
      * 反射生成新的实例
      */
-    private static CaseC reflectToObj() throws Exception {
-        Constructor<CaseC> constructor = CaseC.class.getDeclaredConstructor();
-        constructor.setAccessible(true);
-        CaseC reflectObj = constructor.newInstance();
+    private static CaseC reflectToObj() {
+        Constructor<CaseC> constructor = null;
+        CaseC reflectObj = null;
+        try {
+            constructor = CaseC.class.getDeclaredConstructor();
+            constructor.setAccessible(true);
+            reflectObj = constructor.newInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return reflectObj;
     }
 
@@ -43,9 +54,9 @@ public class CaseC implements Serializable {
      * 反序列化生成实例
      * @return
      */
-    private static CaseC SerialToObj() {
-        return null;
-//        ObjectOutputStream os = new ObjectOutputStream(CaseC.getInstance().);
+    private static CaseC unSerialToObj() {
+        byte[] arr = SerializationUtils.serialize(CaseC.getInstance());
+        return SerializationUtils.deserialize(arr);
     }
 
 }
