@@ -13,10 +13,10 @@ public class FactoryMain {
          abstractFactoryTest();
      }
     /**
-     * 一个工厂，n个产品
+     * 一个工厂，1个抽象产品，n个实例产品
      */
      private static void simpleFactoryTest() {
-         RoleSimpleFactory factory = new RoleSimpleFactory();
+         RoleSimpleFactory factory = RoleSimpleFactory.getInstance();
          AbstractRole annie = factory.create("annie");
          AbstractRole jax = factory.create("jax");
          System.out.println(annie.hashCode());
@@ -24,7 +24,7 @@ public class FactoryMain {
      }
 
     /**
-     * 一个抽象工厂，n个实例工厂，m个产品
+     * 一个抽象工厂，n个实例工厂，m种抽象产品，m种实例产品
      */
      private static void factoryMethodTest() {
          RoleFactory roleForAnnieFactory = RoleForAnnieFactory.getInstance();
@@ -35,7 +35,7 @@ public class FactoryMain {
      }
 
     /**
-     * 一个抽象工厂簇，n个抽象工厂，m个实例工厂，n*m个产品
+     * 一个抽象工厂簇，n个抽象工厂，m个实例工厂，n个抽象产品，m个实例产品
      */
     private static void abstractFactoryTest() {
         HeroForAnnieFactory heroForAnnieFactory = HeroForAnnieFactory.getInstance();

@@ -8,6 +8,14 @@ package com.yasir.analysis.mode.design.factory;
  */
 public class RoleSimpleFactory {
 
+    private RoleSimpleFactory() {}
+
+    private static final RoleSimpleFactory INSTANCE = new RoleSimpleFactory();
+
+    public static RoleSimpleFactory getInstance() {
+        return INSTANCE;
+    }
+
     public AbstractRole create(String name) {
         if("annie".equalsIgnoreCase(name)) {
             return new RoleForAnnie();
